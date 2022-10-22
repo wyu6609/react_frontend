@@ -3,17 +3,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Main from "./main/Main";
 import UserAccessContainer from "./components/UserAccess/UserAccessContainer";
-
+import { Button } from "reactstrap";
 // login, signup
 
 function App() {
   //user state, null on load
-  const [user, setUser] = useState(null); // logged in (true) : logged out (null)
+  const [user, setUser] = useState(false); // logged in (true) : logged out (null)
 
   //check for user on component load
   useEffect(() => {
     //      autoLogin();
-    if (user == true) {
+    if (user !== null) {
       console.log("user exists, loggedin");
     } else {
       console.log("user dne, showing UserAccessContainer");
@@ -31,10 +31,19 @@ function App() {
       }
     });
   };
-  if (!user) return <UserAccessContainer user={user} />;
+  // if (!user) return <UserAccessContainer user={user} />;
+
+  const toggleUser = () => {
+    setUser(!user);
+  };
 
   // show dashboard if logged in
-  return <Main user={user} />;
+  return (
+    <>
+      <Main user={user} toggleUser={toggleUser} />
+      <Button onClick={toggleUser}>{user ? "sign out" : "sign in"}</Button>
+    </>
+  );
 }
 
 export default App;
